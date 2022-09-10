@@ -62,9 +62,10 @@ const typeDefs = gql`
 `;
 
 const apolloClient = new ApolloClient({
-  uri: "https://test.artem-rachkov.ru/graphql",
+  uri: "http://localhost:4000/graphql",
   cache: new InMemoryCache(),
   typeDefs,
+  credentials: "include",
 });
 
 export default apolloClient;

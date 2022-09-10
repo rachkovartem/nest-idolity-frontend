@@ -4,7 +4,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import { Controller, useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
-import { LOGIN } from "../../src/api/queries/auth";
+import { SIGNUP } from "../../src/api/queries/auth";
 const { Title, Paragraph } = Typography;
 
 type FormValues = {
@@ -15,7 +15,7 @@ type FormValues = {
 
 export default function Home() {
   const { t } = useTranslation("common");
-  const [CreateUser, { data, loading, error }] = useMutation(LOGIN);
+  const [CreateUser, { data, loading, error }] = useMutation(SIGNUP);
 
   const {
     register,

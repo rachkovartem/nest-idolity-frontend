@@ -3,7 +3,7 @@ import Head from "next/head";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Trans, useTranslation } from "next-i18next";
 import { Controller, useForm } from "react-hook-form";
-import { useMutation } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 const { Title, Paragraph } = Typography;
 import { LOGIN } from "../src/api/queries/auth";
 import Link from "next/link";
@@ -15,7 +15,7 @@ type FormValues = {
 
 export default function Home() {
   const { t } = useTranslation("common");
-  const [CreateUser, { data, loading, error }] = useMutation(LOGIN);
+  const [Login, { data, loading, error }] = useLazyQuery(LOGIN);
 
   const {
     register,
@@ -32,9 +32,9 @@ export default function Home() {
 
   const onSubmit = async (data) => {
     try {
-      await CreateUser({ variables: data });
-    } catch {
-      alert("kek");
+      await Login({ variables: data });
+    } catch (error) {
+      console.log(error);
     }
   };
 
