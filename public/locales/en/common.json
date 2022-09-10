@@ -1,0 +1,11 @@
+{
+  "welcome": "Welcome to the Idolity",
+  "loginOr": "Log in to your account or",
+  "create": " create",
+  "ifNotYet": " if it doesn't exist yet",
+  "createAcc": "Create an account to support your favorite authors",
+  "name": "Name",
+  "email": "Email",
+  "password": "Password",
+  "register": "Register"
+}

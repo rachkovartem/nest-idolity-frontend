@@ -1,14 +1,14 @@
 import { Button, Card, ConfigProvider, Input, Space, Typography } from "antd";
 import Head from "next/head";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { Trans, useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next";
 import { Controller, useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
+import { LOGIN } from "../../src/api/queries/auth";
 const { Title, Paragraph } = Typography;
-import { LOGIN } from "../src/api/queries/auth";
-import Link from "next/link";
 
 type FormValues = {
+  name: string;
   email: string;
   password: string;
 };
@@ -25,6 +25,7 @@ export default function Home() {
     formState: { errors, touchedFields },
   } = useForm<FormValues>({
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },
@@ -56,17 +57,35 @@ export default function Home() {
         <Card bordered={false}>
           <Typography>
             <Title>{t("welcome")}</Title>
-            <Paragraph>
-              <span>{t("loginOr")}</span>
-              <Link href="/signup">{t("create")}</Link>
-              <span>{t("ifNotYet")}</span>
-            </Paragraph>
+            <Paragraph>{t("createAcc")}</Paragraph>
           </Typography>
           <Space
             direction="vertical"
             size={20}
             style={{ width: "100%", marginTop: "20px" }}
           >
+            <Controller
+              control={control}
+              name="name"
+              rules={{
+                required: true,
+              }}
+              render={({
+                field: { onChange, onBlur, value, ref },
+                fieldState: { isTouched, error },
+              }) => (
+                <Input
+                  ref={ref}
+                  status={error && isTouched && "error"}
+                  size="large"
+                  value={value}
+                  placeholder={t("name")}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                />
+              )}
+            />
+
             <Controller
               control={control}
               name="email"
