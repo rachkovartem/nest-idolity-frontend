@@ -117,7 +117,7 @@ export default function Home() {
               size="large"
               style={{ width: "100%", marginTop: "50px" }}
             >
-              {t("register")}
+              {t("login")}
             </Button>
           </Space>
         </Card>

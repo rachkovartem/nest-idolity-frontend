@@ -4,8 +4,12 @@
   "create": " create",
   "ifNotYet": " if it doesn't exist yet",
   "createAcc": "Create an account to support your favorite authors",
+  "or": "Or",
+  "signin": "log in",
+  "ifAlreadyHave": " with your existing account.",
   "name": "Name",
   "email": "Email",
   "password": "Password",
-  "register": "Register"
+  "register": "Register",
+  "login": "Log in"
 }

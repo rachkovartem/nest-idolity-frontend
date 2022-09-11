@@ -1,10 +1,11 @@
-import { Button, Card, ConfigProvider, Input, Space, Typography } from "antd";
+import { Button, Card, Input, Space, Typography } from "antd";
 import Head from "next/head";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import { Controller, useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { SIGNUP } from "../../src/api/queries/auth";
+import Link from "next/link";
 const { Title, Paragraph } = Typography;
 
 type FormValues = {
@@ -15,13 +16,11 @@ type FormValues = {
 
 export default function Home() {
   const { t } = useTranslation("common");
-  const [CreateUser, { data, loading, error }] = useMutation(SIGNUP);
+  const [CreateUser, { data, loading }] = useMutation(SIGNUP);
 
   const {
-    register,
     control,
     handleSubmit,
-    watch,
     formState: { errors, touchedFields },
   } = useForm<FormValues>({
     defaultValues: {
@@ -34,8 +33,8 @@ export default function Home() {
   const onSubmit = async (data) => {
     try {
       await CreateUser({ variables: data });
-    } catch {
-      alert("kek");
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
@@ -58,6 +57,11 @@ export default function Home() {
           <Typography>
             <Title>{t("welcome")}</Title>
             <Paragraph>{t("createAcc")}</Paragraph>
+            <Paragraph>
+              <span>{t("or")}</span>
+              <Link href="/">{t("signin")}</Link>
+              <span>{t("ifAlreadyHave")}</span>
+            </Paragraph>
           </Typography>
           <Space
             direction="vertical"
@@ -130,6 +134,7 @@ export default function Home() {
               )}
             />
             <Button
+              loading={loading}
               htmlType="submit"
               type="primary"
               shape="round"

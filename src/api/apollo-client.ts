@@ -1,4 +1,5 @@
 import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
+import { env } from "../shared/config";
 
 const typeDefs = gql`
   type User {
@@ -62,7 +63,7 @@ const typeDefs = gql`
 `;
 
 const apolloClient = new ApolloClient({
-  uri: "http://localhost:4000/graphql",
+  uri: `${env.API_PROTOCOL}://${env.API_URL}`,
   cache: new InMemoryCache(),
   typeDefs,
   credentials: "include",

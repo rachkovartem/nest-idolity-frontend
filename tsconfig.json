@@ -18,6 +18,14 @@
     "moduleResolution": "node",
     "isolatedModules": true,
     "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@src": ["./src/*"],
+      "@public": ["./public/*"],
+      "@shared": ["./src/shared"],
+      "@api": ["./src/api"],
+      "@components": ["./src/components"]
+    }
   },
   "include": [
     "next-env.d.ts",
