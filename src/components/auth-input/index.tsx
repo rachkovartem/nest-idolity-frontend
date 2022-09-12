@@ -28,7 +28,7 @@ export const AuthInput = ({ control, errors, name }) => {
             name={name}
             render={({ message }) => {
               return (
-                <Typography style={{ marginBottom: "-22px", color: "#FF0000" }}>
+                <Typography style={{ marginBottom: "-20px", color: "#FF0000" }}>
                   {t(message)}
                 </Typography>
               );

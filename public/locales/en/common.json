@@ -18,5 +18,7 @@
   "incorrectEmailFormat": "Incorrect email",
   "passwordRequired": "Password required",
   "nameRequired": "Name required",
-  "noUserOrWrongPassword": "User doesn't exits or wrong password"
+  "noUserOrWrongPassword": "User doesn't exits or wrong password",
+  "smthWrong": "Something went wrong, try again later",
+  "error": "Error"
 }

@@ -12,6 +12,9 @@ import { ErrorMessage } from "@hookform/error-message";
 import { AuthInput } from "../../src/components/auth-input";
 import i18nMessages from "../../src/shared/config/i18n-messages";
 import { userSchema } from "../../src/shared/config/joiValidation";
+import { useEffect } from "react";
+import { notify } from "../../src/shared/utils/notification/notify";
+import { useRouter } from "next/router";
 const { Title, Paragraph } = Typography;
 
 type FormValues = {
@@ -22,12 +25,13 @@ type FormValues = {
 
 export default function Home() {
   const { t } = useTranslation("common");
-  const [CreateUser, { data, loading }] = useMutation(SIGNUP);
+  const [CreateUser, { error, loading }] = useMutation(SIGNUP);
+  const router = useRouter();
 
   const {
     control,
     handleSubmit,
-    formState: { errors, touchedFields },
+    formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
       name: "",
@@ -37,11 +41,24 @@ export default function Home() {
     resolver: joiResolver(userSchema),
   });
 
+  useEffect(() => {
+    if (error) {
+      const message = error.message ? t(error.message) : t("smthWrong");
+      notify.error({ title: t("error"), description: message });
+    }
+  }, [error]);
+
   const onSubmit = async (data) => {
     try {
-      await CreateUser({ variables: data });
+      const res = await CreateUser({ variables: data });
+      if (res.data) {
+        await router.push("/");
+      }
     } catch (error) {
-      console.log(error.message);
+      notify.error({
+        title: t("error"),
+        description: t("smthWrong"),
+      });
     }
   };
 

@@ -1,36 +1,35 @@
-import { Button, Card, ConfigProvider, Input, Space, Typography } from "antd";
+import { Button, Card, Space, Typography } from "antd";
 import Head from "next/head";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useLazyQuery } from "@apollo/client";
 const { Title, Paragraph } = Typography;
 import { LOGIN } from "../src/api/queries/auth";
 import Link from "next/link";
-import Joi from "joi";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { userSchema } from "../src/shared/config/joiValidation";
 import { AuthInput } from "../src/components/auth-input";
+import { notify } from "../src/shared/utils/notification/notify";
+import { useEffect } from "react";
 
 type FormValues = {
   email: string;
   password: string;
 };
 
-const userSchemaWithoutPass = userSchema.fork(["password"], (schema) =>
+const userSchemaWithoutPass = userSchema.fork(["name"], (schema) =>
   schema.optional()
 );
 
 export default function Home() {
   const { t } = useTranslation("common");
-  const [Login, { data, loading, error }] = useLazyQuery(LOGIN);
+  const [Login, { loading, error }] = useLazyQuery(LOGIN);
 
   const {
-    register,
     control,
     handleSubmit,
-    watch,
-    formState: { errors, touchedFields },
+    formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
       email: "",
@@ -39,11 +38,34 @@ export default function Home() {
     resolver: joiResolver(userSchemaWithoutPass),
   });
 
+  useEffect(() => {
+    if (error) {
+      const message =
+        error.message === "Unauthorized"
+          ? t("noUserOrWrongPassword")
+          : error.message
+          ? t(error.message)
+          : t("smthWrong");
+      notify.error({ title: t("error"), description: message });
+    }
+  }, [error]);
+
   const onSubmit = async (data) => {
     try {
-      await Login({ variables: data });
+      const res = await Login({
+        variables: {
+          email: data.email.toLowerCase(),
+          password: data.password,
+        },
+      });
+      if (res.data) {
+        notify.success({ title: "Успешно" });
+      }
     } catch (error) {
-      console.log(error);
+      notify.error({
+        title: t("error"),
+        description: t("smthWrong"),
+      });
     }
   };
 
@@ -79,6 +101,7 @@ export default function Home() {
             <AuthInput control={control} errors={errors} name="email" />
             <AuthInput control={control} errors={errors} name="password" />
             <Button
+              loading={loading}
               htmlType="submit"
               type="primary"
               shape="round"
@@ -98,7 +121,6 @@ export async function getStaticProps({ locale }) {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["common"])),
-      // Will be passed to the page component as props
     },
   };
 }

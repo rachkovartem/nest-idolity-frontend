@@ -1,0 +1,11 @@
+.Toastify__toast {
+  background: transparent;
+}
+
+.Toastify__toast-body {
+  margin: 0;
+  background: transparent;
+  div:last-child{
+    height: 100%;
+  }
+}

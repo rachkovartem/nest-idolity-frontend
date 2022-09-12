@@ -20,11 +20,11 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@src": ["./src/*"],
-      "@public": ["./public/*"],
-      "@shared": ["./src/shared"],
-      "@api": ["./src/api"],
-      "@components": ["./src/components"]
+      "@src": ["src/*"],
+      "@public": ["public/*"],
+      "@shared": ["src/shared"],
+      "@api": ["src/api"],
+      "@components": ["src/components"]
     }
   },
   "include": [

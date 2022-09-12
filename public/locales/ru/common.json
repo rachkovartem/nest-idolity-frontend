@@ -18,5 +18,7 @@
   "incorrectEmailFormat": "Некорректная почта",
   "passwordRequired": "Пароль обязателен",
   "nameRequired": "Имя обязательно",
-  "noUserOrWrongPassword": "Нет такого пользователя или неверный пароль"
+  "noUserOrWrongPassword": "Нет такого пользователя или пароль неверный",
+  "smthWrong": "Что-то пошло не так, попробуйте позже",
+  "error": "Ошибка"
 }
