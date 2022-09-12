@@ -1,17 +1,25 @@
 import { Button, Card, ConfigProvider, Input, Space, Typography } from "antd";
 import Head from "next/head";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { Trans, useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next";
 import { Controller, useForm } from "react-hook-form";
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 const { Title, Paragraph } = Typography;
 import { LOGIN } from "../src/api/queries/auth";
 import Link from "next/link";
+import Joi from "joi";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { userSchema } from "../src/shared/config/joiValidation";
+import { AuthInput } from "../src/components/auth-input";
 
 type FormValues = {
   email: string;
   password: string;
 };
+
+const userSchemaWithoutPass = userSchema.fork(["password"], (schema) =>
+  schema.optional()
+);
 
 export default function Home() {
   const { t } = useTranslation("common");
@@ -28,6 +36,7 @@ export default function Home() {
       email: "",
       password: "",
     },
+    resolver: joiResolver(userSchemaWithoutPass),
   });
 
   const onSubmit = async (data) => {
@@ -67,49 +76,8 @@ export default function Home() {
             size={20}
             style={{ width: "100%", marginTop: "20px" }}
           >
-            <Controller
-              control={control}
-              name="email"
-              rules={{
-                required: true,
-              }}
-              render={({
-                field: { onChange, onBlur, value, name, ref },
-                fieldState: { invalid, isTouched, isDirty, error },
-                formState,
-              }) => (
-                <Input
-                  ref={ref}
-                  status={error && "error"}
-                  size="large"
-                  value={value}
-                  placeholder={t("email")}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="password"
-              rules={{
-                required: true,
-              }}
-              render={({
-                field: { onChange, onBlur, value, ref },
-                fieldState: { error },
-              }) => (
-                <Input
-                  ref={ref}
-                  status={error && "error"}
-                  size="large"
-                  value={value}
-                  placeholder={t("password")}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                />
-              )}
-            />
+            <AuthInput control={control} errors={errors} name="email" />
+            <AuthInput control={control} errors={errors} name="password" />
             <Button
               htmlType="submit"
               type="primary"

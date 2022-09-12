@@ -6,6 +6,12 @@ import { Controller, useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { SIGNUP } from "../../src/api/queries/auth";
 import Link from "next/link";
+import Joi from "joi";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { ErrorMessage } from "@hookform/error-message";
+import { AuthInput } from "../../src/components/auth-input";
+import i18nMessages from "../../src/shared/config/i18n-messages";
+import { userSchema } from "../../src/shared/config/joiValidation";
 const { Title, Paragraph } = Typography;
 
 type FormValues = {
@@ -28,6 +34,7 @@ export default function Home() {
       email: "",
       password: "",
     },
+    resolver: joiResolver(userSchema),
   });
 
   const onSubmit = async (data) => {
@@ -68,71 +75,9 @@ export default function Home() {
             size={20}
             style={{ width: "100%", marginTop: "20px" }}
           >
-            <Controller
-              control={control}
-              name="name"
-              rules={{
-                required: true,
-              }}
-              render={({
-                field: { onChange, onBlur, value, ref },
-                fieldState: { isTouched, error },
-              }) => (
-                <Input
-                  ref={ref}
-                  status={error && isTouched && "error"}
-                  size="large"
-                  value={value}
-                  placeholder={t("name")}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                />
-              )}
-            />
-
-            <Controller
-              control={control}
-              name="email"
-              rules={{
-                required: true,
-              }}
-              render={({
-                field: { onChange, onBlur, value, name, ref },
-                fieldState: { invalid, isTouched, isDirty, error },
-                formState,
-              }) => (
-                <Input
-                  ref={ref}
-                  status={error && "error"}
-                  size="large"
-                  value={value}
-                  placeholder={t("email")}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="password"
-              rules={{
-                required: true,
-              }}
-              render={({
-                field: { onChange, onBlur, value, ref },
-                fieldState: { error },
-              }) => (
-                <Input
-                  ref={ref}
-                  status={error && "error"}
-                  size="large"
-                  value={value}
-                  placeholder={t("password")}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                />
-              )}
-            />
+            <AuthInput control={control} errors={errors} name="name" />
+            <AuthInput control={control} errors={errors} name="email" />
+            <AuthInput control={control} errors={errors} name="password" />
             <Button
               loading={loading}
               htmlType="submit"

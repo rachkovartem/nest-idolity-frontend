@@ -11,5 +11,12 @@
   "email": "Почта",
   "password": "Пароль",
   "register": "Зарегистрироваться",
-  "login": "Войти"
+  "login": "Войти",
+  "minLengthName": "Минимальная длина 4 символа",
+  "emailRequired": "Почта обязательна",
+  "emailAlreadyInUse": "Почта уже используется",
+  "incorrectEmailFormat": "Некорректная почта",
+  "passwordRequired": "Пароль обязателен",
+  "nameRequired": "Имя обязательно",
+  "noUserOrWrongPassword": "Нет такого пользователя или неверный пароль"
 }
